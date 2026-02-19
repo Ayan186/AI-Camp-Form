@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student ID Badge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+     <link rel="shortcut icon" href="./AI Camp.png" type="image/x-icon">
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .card {
+            width: 350px;
+            height: 550px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
+            position: relative;
+            border: 1px solid #e2e8f0;
+        }
+        .header {
+        background: #1e293b;
+        color: #fff;
+        padding: 30px 20px 50px; /* Reduced padding slightly */
+        text-align: center;
+        border-bottom: 5px solid #10b981; /* Replaced clip-path with a solid border for cleaner PNGs */
+    }
+    .photo-area img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    /* This ensures the image doesn't "leak" out during capture */
+    display: block;
+    margin: 0 auto;
+    background: #fff;
+}
+        .header h3 { margin: 0; font-size: 20px; letter-spacing: 1px; color: #10b981; }
+        .header p { margin: 5px 0 0; opacity: 0.8; font-size: 12px; text-transform: uppercase; }
+
+        .photo-area {
+            text-align: center;
+            margin-top: -50px;
+            position: relative;
+        }
+        .info {
+            padding: 20px 30px;
+            text-align: center;
+        }
+        .student-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 10px 0 5px;
+        }
+        .student-id {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            text-align: left;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 20px;
+        }
+        .stat-item label { font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700; }
+        .stat-item p { font-size: 13px; color: #334155; margin: 2px 0; font-weight: 600; }
+
+        .footer-qr {
+            margin-top: 20px;
+            opacity: 0.5;
+            font-size: 10px;
+        }
+
+        .actions { margin-top: 30px; display: flex; gap: 10px; }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-download { background: #1e293b; color: white; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+<div class="card" id="idCard">
+    <div class="header">
+        <h3>RAMZAN AI CAMP</h3>
+        <p>Official Student Pass</p>
+    </div>
+
+    <div class="photo-area">
+        <img id="displayPhoto" src="" alt="Profile">
+    </div>
+
+    <div class="info">
+        <div class="student-name" id="displayName">---</div>
+        <div class="student-id">ID: 2024-AIC-001</div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <label>Roll No</label>
+                <p>#78692</p>
+            </div>
+            <div class="stat-item">
+                <label>Batch</label>
+                <p id="displayBatch">---</p>
+            </div>
+            <div class="stat-item">
+                <label>City</label>
+                <p id="displayCity">---</p>
+            </div>
+            <div class="stat-item">
+                <label>Qualification</label>
+                <p id="displayQual">---</p>
+            </div>
+        </div>
+        
+        <div class="footer-qr">
+            [ VERIFIED STUDENT ACCESS ]
+        </div>
+    </div>
+</div>
+
+<div class="actions">
+    <button class="btn btn-download" onclick="downloadID()">Download PNG</button>
+    <a href="https://chat.whatsapp.com/IvvlsSTjVoX1g1Su84pPbB" class="btn btn-whatsapp" target="_blank">Join Community</a>
+</div>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+    const data = JSON.parse(localStorage.getItem("studentData"));
+    if(data) {
+        document.getElementById("displayPhoto").src = data.photo;
+        document.getElementById("displayName").innerText = data.name;
+        document.getElementById("displayBatch").innerText = data.batch;
+        document.getElementById("displayCity").innerText = data.city;
+        document.getElementById("displayQual").innerText = data.qualification;
+    }
+
+    function downloadID() {
+    const card = document.getElementById("idCard");
+    
+    // Using a higher scale and disabling logging for a cleaner file
+    html2canvas(card, { 
+        scale: 4, 
+        useCORS: true,
+        backgroundColor: "#f1f5f9" // Matches your body background
+    }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `ID_Card_${data.name}.png`;
+        link.href = canvas.toDataURL("image/png", 1.0);
+        link.click();
+    });
+}
+</script>
+</body>
+</html>

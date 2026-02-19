@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | Ramzan AI Camp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="./AI Camp.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+        body {
+            margin: 0;
+            background: radial-gradient(circle at top right, #e2e8f0, #cbd5e1);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .header-section h2 { margin: 0; color: var(--text); font-size: 28px; letter-spacing: -0.5px; }
+        .header-section p { color: #64748b; margin-top: 8px; font-size: 14px; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 12px; color: var(--primary); text-transform: uppercase; }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: #fff;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+        .file-input-wrapper {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 20px;
+        }
+        button:hover { background: #4338ca; transform: translateY(-2px); }
+        
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <div class="header-section">
+        <h2>🌙 Ramzan AI Camp</h2>
+        <p>Register to start your journey into Artificial Intelligence</p>
+    </div>
+
+    <form id="regForm">
+        <div class="grid">
+            <div>
+                <label>Mode</label>
+                <select name="mode"><option>Online</option></select>
+            </div>
+            <div>
+                <label>Batch Time</label>
+                <select name="batch"><option>12 AM To 1 AM</option></select>
+            </div>
+            <div class="full-width">
+                <label>Full Name</label>
+                <input name="name" placeholder="John Doe" required>
+            </div>
+            <div>
+                <label>Guardian Name</label>
+                <input name="guardian" placeholder="Guardian Name" required>
+            </div>
+            <div>
+                <label>Contact</label>
+                <input name="contact" placeholder="03xx-xxxxxxx" required>
+            </div>
+            <div class="full-width">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="email@example.com" required>
+            </div>
+            <div>
+                <label>City</label>
+                <input name="city" placeholder="Karachi" required>
+            </div>
+            <div>
+                <label>CNIC / B-Form</label>
+                <input name="cnic" placeholder="42xxx-xxxxxxx-x" required>
+            </div>
+            <div>
+                <label>Gender</label>
+                <select name="gender"><option>Male</option><option>Female</option></select>
+            </div>
+            <div>
+                <label>Date of Birth</label>
+                <input type="date" name="dob" required>
+            </div>
+            <div class="full-width">
+                <label>Last Qualification</label>
+                <input name="qualification" placeholder="Bachelors / Intermediate" required>
+            </div>
+            <div class="full-width">
+                <label>Profile Image</label>
+                <div class="file-input-wrapper">
+                    <input type="file" name="photo" accept="image/*" required>
+                </div>
+            </div>
+        </div>
+        <button type="submit">Submit Registration</button>
+    </form>
+</div>
+
+<script>
+document.getElementById("regForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    let data = {};
+    
+    // Convert form to object properly
+    formData.forEach((value, key) => {
+        if (key !== 'photo') data[key] = value;
+    });
+
+    const file = this.querySelector('input[type="file"]').files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+        data.photo = reader.result;
+        localStorage.setItem("studentData", JSON.stringify(data));
+        window.open("idcard.html", "_blank");
+    };
+    reader.readAsDataURL(file);
+});
+</script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("YOUR_PUBLIC_KEY"); // Get this from EmailJS Account > Public Key
+   })();
+</script>
+
+<script>
+// 1. Initialize with your Public Key
+(function(){
+   emailjs.init("UvbDNcZTfRz1rVu1a"); 
+})();
+
+document.getElementById("regForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector("button");
+    btn.innerText = "Sending Registration...";
+    btn.disabled = true;
+
+    const formData = new FormData(this);
+    let data = {};
+    formData.forEach((value, key) => { 
+        if (key !== 'photo') data[key] = value; 
+    });
+
+    // Send to Student
+const studentEmail = emailjs.send("service_pnou3dg", "template_tu1yj4h", {
+    name: data.name,
+    email: data.email,
+    batch: data.batch,
+    mode: data.mode,
+    city: data.city,
+    cnic: data.cnic
+});
+
+// Send to You (Ayan)
+emailjs.send("service_pnou3dg", "template_i8pn40f", {
+    name: data.name,
+    guardian: data.guardian,
+    cnic: data.cnic,
+    gender: data.gender,
+    contact: data.contact,
+    email: data.email,
+    city: data.city,
+    qualification: data.qualification,
+    batch: data.batch,
+    mode: data.mode
+})
+
+// Wait for both to finish
+Promise.all([studentEmail, adminEmail]).then(() => {
+    // Proceed to ID Card generation
+    const file = this.querySelector('input[type="file"]').files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+        data.photo = reader.result;
+        localStorage.setItem("studentData", JSON.stringify(data));
+        window.location.href = "idcard.html";
+    };
+    reader.readAsDataURL(file);
+})
+    .then(() => {
+        // Handle image and redirect only AFTER email is sent
+        const file = this.querySelector('input[type="file"]').files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            data.photo = reader.result;
+            localStorage.setItem("studentData", JSON.stringify(data));
+            window.location.href = "idcard.html";
+        };
+        reader.readAsDataURL(file);
+    }, (err) => {
+        alert("Email failed to send. Check your EmailJS usage limits.");
+        btn.innerText = "Submit Registration";
+        btn.disabled = false;
+    });
+});
+</script>
+</body>
+</html>
